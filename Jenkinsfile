@@ -49,14 +49,12 @@ pipeline {
                     git config --global user.name ${USER_NAME}
                     git config --global user.email ${EMAIL}
                     git add .
-                    def gitStatus = sh(script: 'git status --porcelain', returnStdout: true).trim()
-                    if (gitStatus) {
+                    if git status --porcelain | grep -q .; then
+                        echo "No changes to commit."
+                    else
                         git commit -m "from git commit ${params.GIT_COMMIT_REV}"
                         git push https://${PASSWORD}@github.com/khaledeldsoky/DevOps_project.git HEAD:cd
-                    } else {
-                        echo "No changes to commit."
-                    }
-
+                    fi
                     """
                 }
             }
