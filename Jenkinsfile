@@ -49,18 +49,20 @@ pipeline {
                     git config --global user.name ${USER_NAME}
                     git config --global user.email ${EMAIL}
                     git add .
-                    git commit -m "from git commit ${params.GIT_COMMIT_REV}"
-                    git push https://${PASSWORD}@github.com/khaledeldsoky/DevOps_project.git HEAD:cd
+                    def gitStatus = sh(script: 'git status --porcelain', returnStdout: true).trim()
+                    if (gitStatus) {
+                        sh 'git commit -m "from git commit ${commitHash}"'
+                        sh 'git push https://${USERNAME}:${PASSWORD}@github.com/khaledeldsoky/app.git HEAD:CD'
+                    } else {
+                        echo "No changes to commit."
+                    }
+
                     """
                 }
             }
         }
-        
-        stage('echo') {
-            steps {
-                sh "echo success"
-            }
-        }
+
+
 
     }
 }
