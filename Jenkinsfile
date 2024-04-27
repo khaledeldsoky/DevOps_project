@@ -22,7 +22,7 @@ pipeline {
 
         stage('Checkout Source Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/khaledeldsoky/app.git'
+                git branch: 'ci', url: 'https://github.com/khaledeldsoky/DevOps_project.git'
             }
         }
 
