@@ -28,7 +28,7 @@ pipeline {
 
         stage('Checkout Source Code') {
             steps {
-                git branch: 'CD', url: 'https://github.com/khaledeldsoky/app.git'
+                git branch: 'cd', url: 'https://github.com/khaledeldsoky/DevOps_project.git'
             }
         }
         
@@ -50,7 +50,7 @@ pipeline {
                     git config --global user.email ${EMAIL}
                     git add .
                     git commit -m "from git commit ${params.GIT_COMMIT_REV}"
-                    git push https://${PASSWORD}@github.com/khaledeldsoky/app.git HEAD:CD
+                    git push https://${PASSWORD}@github.com/khaledeldsoky/DevOps_project.git HEAD:cd
                     """
                 }
             }
