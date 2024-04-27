@@ -51,8 +51,8 @@ pipeline {
                     git add .
                     def gitStatus = sh(script: 'git status --porcelain', returnStdout: true).trim()
                     if (gitStatus) {
-                        sh 'git commit -m "from git commit ${commitHash}"'
-                        sh 'git push https://${USERNAME}:${PASSWORD}@github.com/khaledeldsoky/app.git HEAD:CD'
+                        git commit -m "from git commit ${params.GIT_COMMIT_REV}"
+                        git push https://${PASSWORD}@github.com/khaledeldsoky/DevOps_project.git HEAD:cd
                     } else {
                         echo "No changes to commit."
                     }
@@ -62,7 +62,11 @@ pipeline {
             }
         }
 
-
+        stage('echo') {
+            steps {
+                sh "echo success"
+            }
+        }
 
     }
 }
