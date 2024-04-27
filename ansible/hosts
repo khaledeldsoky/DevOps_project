@@ -1,2 +1,3 @@
 [bastion]
-18.209.228.236 ansible_ssh_private_key_file=path
+44.198.61.85  ansible_ssh_private_key_file=/mnt/linux/data/project/devops_1/infra/terrafrom/public_ec2_key_name.pem 
+

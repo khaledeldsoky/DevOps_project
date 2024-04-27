@@ -1,5 +1,7 @@
 # DevOps Project: Kubernetes Deployment with Terraform, Ansible, Jenkins, and ArgoCD
 
+![ Project Diagram ](https://github.com/khaledeldsoky/DevOps_project/blob/main/screens/Diagram.png?raw=true)
+
 This project aims to deploy a small application using Kubernetes (K8s) orchestrated with Terraform, Ansible, Jenkins, and ArgoCD. The infrastructure is provisioned on AWS, and changes pushed to the Git repository automatically reflect in the production environment.
 
 ## Tools Used

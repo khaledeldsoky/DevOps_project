@@ -3,13 +3,13 @@
 
 
 
-- name: Download the latest release kubectl
-  uri:
-    url: "https://dl.k8s.io/release/{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}/bin/linux/amd64/kubectl"
-    dest: /usr/local/bin/kubectl
-    owner: root
-    group: root
-    mode: 0755
+# - name: Download the latest release kubectl
+#   uri:
+#     url: "https://dl.k8s.io/release/{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}/bin/linux/amd64/kubectl"
+#     dest: /usr/local/bin/kubectl
+#     owner: root
+#     group: root
+#     mode: 0755
 
 
 
@@ -45,7 +45,10 @@
     line: 'source <(kubectl completion bash)'
 
 - name: Apply changes to .bashrc
-  command: 'source /home/ubuntu/.bashrc'
+  ansible.builtin.shell: 'source /home/ubuntu/.bashrc'
+  args:
+    executable: /bin/bash
+
 
 
 
