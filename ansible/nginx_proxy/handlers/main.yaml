@@ -1,0 +1,8 @@
+- name: update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name:  Restart Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

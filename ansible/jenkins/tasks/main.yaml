@@ -1,0 +1,81 @@
+- name: update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: install jenkins requirements
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ jenkins_var }}"
+
+- name: Start ssh , if not started
+  ansible.builtin.service:
+    name: ssh
+    state: started
+    enabled: yes
+
+- name: Create a directory for ssh
+  ansible.builtin.file:
+    path: /home/ubuntu/.ssh/
+    state: directory
+    mode: '0740'  
+
+- name: Touch a file for public key
+  ansible.builtin.file:
+    path: /home/ubuntu/.ssh/id_rsa
+    state: touch
+
+- name: Download Jenkins keyring
+  ansible.builtin.get_url:
+    url:  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+    dest:  /usr/share/keyrings/jenkins-keyring.asc
+
+
+- name: Add Jenkins repository to sources.list
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/jenkins.list
+    line:  "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
+    create: yes
+  notify: update
+
+
+- name: install jenkins
+  ansible.builtin.apt:
+    name: jenkins
+    update_cache: yes
+
+- name: open port 8080
+  community.general.ufw:
+    rule: allow
+    port: '8080'
+
+
+
+
+# ------------ for jenkins slave ------------ #
+
+# - name: Create dir for Jenkins
+#   ansible.builtin.file:
+#     path: /home/ubuntu/jenkins_home
+#     state: directory
+#     mode: "0777"
+
+# - name: Create dir for Jenkins ssh
+#   ansible.builtin.file:
+#     path:  /home/ubuntu/jenkins_home/.ssh
+#     state: directory
+#     mode: 700
+#     owner: jenkins
+
+
+# - name: Create dir for Jenkins authorized_keys
+#   ansible.builtin.file:
+#     path:  /home/ubuntu/jenkins_home/.ssh/authorized_keys
+#     state: touch
+#     mode: 600
+#     owner: jenkins
+
+# - name: copy private key to jenkins slave
+#   ansible.builtin.copy:
+#     src: /mnt/linux/data/project/devops_1/terrafrom/public_ec2_key_name.pem
+#     dest: /home/ubuntu/jenkins_home/.ssh/authorized_keys

@@ -1,0 +1,16 @@
+- hosts: bastion
+  remote_user: ubuntu
+  become: yes         
+  roles:
+    - docker
+    - kubectl
+    - jenkins
+  
+
+# - hosts: private
+#   remote_user: ubuntu
+#   become: yes 
+#   roles: 
+#     # - jenkins
+#     - docker
+    

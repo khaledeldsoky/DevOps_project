@@ -1,0 +1,75 @@
+# # ------------------------ docker ------------------------ # #
+- name: Update
+  ansible.builtin.apt:
+    update_cache: yes
+
+
+- name: install docker docker requirment
+  ansible.builtin.apt:
+    name: "{{ item  }}"
+    state: present
+  loop: "{{ docker_requirment }}"
+
+
+- name: Add Docker GPG apt Key  
+  ansible.builtin.apt_key:
+    url:  https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+
+- name: Add source repository into sources list
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
+
+
+- name: install docker packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ docker_packages }}"
+  
+
+- name: Add the users to docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ users }}"
+
+
+- name: open docker.sock to everyone
+  file:
+    path: /var/run/docker.sock
+    mode: 0760
+
+
+# # ------------------------ awscli ------------------------ # #
+
+- name: install pip3
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+    state: present
+    update_cache: yes
+
+- name: install aws
+  ansible.builtin.pip:
+    name:
+      - awscli
+    state: present
+
+
+# # ------------------------ Jenkins image ------------------------ # #
+
+# - name: Pull Jenkins Docker image  
+#   community.docker.docker_image:
+#     name: jenkins/jenkins:lts
+#     source: pull
+
+# - name: run Jenkins Docker image
+#   docker_container:
+#     name: jenkins
+#     image: jenkins/jenkins
+#     ports:
+#       - "8080:8080"

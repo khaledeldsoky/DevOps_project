@@ -1,0 +1,52 @@
+
+# # ------------------------ kubectl ------------------------ # #
+
+
+
+- name: Download the latest release kubectl
+  uri:
+    url: "https://dl.k8s.io/release/{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}/bin/linux/amd64/kubectl"
+    dest: /usr/local/bin/kubectl
+    owner: root
+    group: root
+    mode: 0755
+
+
+
+# # ------------------------ minikube ------------------------ # #
+
+
+# - name: install the latest minikube stable release on x86-64 Linux using binary download
+#   uri:
+#     url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+#     dest: /usr/local/bin/minikube 
+#     mode: 775
+
+# - name: Remove downloaded Minikube binary
+#   file:
+#     path: minikube-linux-amd64
+#     state: absent
+# - 
+# - name: Start Minikube
+#   ansible.builtin.shell: minikube start --force
+  
+
+
+# # ------------------------ auto completion ------------------------ # #
+
+- name: Install bash-completion
+  apt:
+    name: bash-completion
+    state: present
+
+- name: Add kubectl completion script to .bashrc
+  lineinfile:
+    path: /home/ubuntu/.bashrc
+    line: 'source <(kubectl completion bash)'
+
+- name: Apply changes to .bashrc
+  command: 'source /home/ubuntu/.bashrc'
+
+
+
+ 

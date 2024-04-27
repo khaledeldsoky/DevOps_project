@@ -1,0 +1,4 @@
+terraform_var:
+    - gnupg 
+    - software-properties-common
+    - curl

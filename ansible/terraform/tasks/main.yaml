@@ -1,0 +1,42 @@
+- name: installed the gnupg, software-properties-common, and curl
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ terraform_var }}"
+
+
+- name: Download HashiCorp GPG key
+  ansible.builtin.get_url:
+    url: https://apt.releases.hashicorp.com/gpg 
+    dest: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+  delay: 5
+
+
+
+# - name: Import HashiCorp GPG key
+#   ansible.builtin.shell:  
+#     cmd: |
+#       wget -O- https://apt.releases.hashicorp.com/gpg | \
+#       gpg --dearmor | \
+#       sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+#   notify: update
+
+
+- name: install terraform
+  ansible.builtin.apt:
+    name:
+      - terraform
+    state: present
+
+
+- name: install pip3
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+    state: present
+    
+- name: install aws
+  ansible.builtin.pip:
+    name:
+      - awscli
+    state: present

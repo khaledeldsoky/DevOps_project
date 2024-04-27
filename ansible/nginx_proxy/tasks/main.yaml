@@ -1,0 +1,44 @@
+- name: update
+  ansible.builtin.apt:
+    update_cache: yes
+
+
+- name: Install apache nginx  
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  notify: update
+
+
+- name: start and enable nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+
+
+- name: 'Disable the Default Virtual Host'
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+
+- name: Copy Nginx configuration template
+  ansible.builtin.template:
+    src: /mnt/linux/data/project/final-project/ansible/nginx_proxy/templates/nginx_proxy.conf
+    dest: /etc/nginx/sites-available/proxy.conf 
+
+
+
+- name: Enable proxy site
+  file:
+    src: /etc/nginx/sites-available/proxy.conf
+    dest: /etc/nginx/sites-enabled/proxy.conf
+    state: link
+
+- name:  Restart Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  register: nginx_restart_result
+  ignore_errors: yes
+
