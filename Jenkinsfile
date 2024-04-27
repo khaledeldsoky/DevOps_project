@@ -56,11 +56,6 @@ pipeline {
             }
         }
 
-        stage('echo') {
-            steps {
-                sh "echo success"
-            }
-        }
-        
+
     }
 }
