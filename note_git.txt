@@ -1,4 +1,0 @@
-# ----------------------------- git ----------------------------- #
- قديم  commit  عشان ترجع ل 
-    git checkout <branch>
-    git reset --hard <old commit hash>
